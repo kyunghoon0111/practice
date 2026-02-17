@@ -47,6 +47,16 @@
     </div>
 
     <ul class="todo-list" id="todoList"></ul>
+
+    <!-- 달력 -->
+    <div class="calendar-card" id="calendarCard">
+      <div class="calendar-header">
+        <button class="cal-nav-btn" onclick="changeCalendarMonth(-1)">&#8249;</button>
+        <span id="calendarTitle"></span>
+        <button class="cal-nav-btn" onclick="changeCalendarMonth(1)">&#8250;</button>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
   </div>
   <script src="/app.js"></script>
 </body>

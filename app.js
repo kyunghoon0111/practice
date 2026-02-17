@@ -3,10 +3,14 @@ const list  = document.getElementById('todoList');
 
 let currentFilter = 'all';
 let allTodos = [];
+let dateSummary = {}; // { "YYYY-MM-DD": "done" | "active" }
 
 // 날짜 관리
-const days = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+const dayLabels = ['일','월','화','수','목','금','토'];
+const today = new Date();
 let currentDateObj = new Date();
+let calendarYear  = currentDateObj.getFullYear();
+let calendarMonth = currentDateObj.getMonth(); // 0-indexed
 
 function toDateStr(d) {
   const y = d.getFullYear();
@@ -16,7 +20,8 @@ function toDateStr(d) {
 }
 
 function formatDisplay(d) {
-  return `📅 ${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${days[d.getDay()]}`;
+  const fullDays = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+  return `📅 ${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 ${fullDays[d.getDay()]}`;
 }
 
 function updateDateLabel() {
@@ -25,6 +30,23 @@ function updateDateLabel() {
 
 function changeDate(delta) {
   currentDateObj.setDate(currentDateObj.getDate() + delta);
+  // 달력 월도 선택 날짜에 맞춤
+  calendarYear  = currentDateObj.getFullYear();
+  calendarMonth = currentDateObj.getMonth();
+  updateDateLabel();
+  loadTodos();
+}
+
+function changeCalendarMonth(delta) {
+  calendarMonth += delta;
+  if (calendarMonth < 0)  { calendarMonth = 11; calendarYear--; }
+  if (calendarMonth > 11) { calendarMonth = 0;  calendarYear++; }
+  renderCalendar();
+}
+
+function selectDate(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  currentDateObj = new Date(y, m - 1, d);
   updateDateLabel();
   loadTodos();
 }
@@ -33,11 +55,18 @@ input.addEventListener('keydown', e => {
   if (e.key === 'Enter') addTodo();
 });
 
+async function loadDateSummary() {
+  const res = await fetch('/todos/dates');
+  dateSummary = await res.json();
+  renderCalendar();
+}
+
 async function loadTodos() {
   const date = toDateStr(currentDateObj);
   const res = await fetch(`/todos?date=${date}`);
   allTodos = await res.json();
   render();
+  loadDateSummary(); // 완료 상태 최신화 → 달력 갱신
 }
 
 async function addTodo() {
@@ -53,6 +82,7 @@ async function addTodo() {
   });
   allTodos = await res.json();
   render();
+  loadDateSummary();
 }
 
 async function toggleTodo(id) {
@@ -60,6 +90,7 @@ async function toggleTodo(id) {
   const res = await fetch(`/todos/${id}/toggle?date=${date}`, { method: 'PATCH' });
   allTodos = await res.json();
   render();
+  loadDateSummary();
 }
 
 async function deleteTodo(id) {
@@ -67,6 +98,7 @@ async function deleteTodo(id) {
   const res = await fetch(`/todos/${id}?date=${date}`, { method: 'DELETE' });
   allTodos = await res.json();
   render();
+  loadDateSummary();
 }
 
 function setFilter(filter, btn) {
@@ -86,7 +118,6 @@ function updateStats() {
   document.getElementById('donePercent').textContent = percent + '%';
   document.getElementById('totalCount').textContent = total + '개';
 
-  // 모두 완료 dot 표시
   const dot = document.getElementById('allDoneDot');
   if (total > 0 && done === total) {
     dot.classList.add('visible');
@@ -100,7 +131,7 @@ function render() {
 
   let filtered = allTodos;
   if (currentFilter === 'active') filtered = allTodos.filter(t => !t.done);
-  if (currentFilter === 'done') filtered = allTodos.filter(t => t.done);
+  if (currentFilter === 'done')   filtered = allTodos.filter(t => t.done);
 
   list.innerHTML = '';
 
@@ -121,6 +152,63 @@ function render() {
   });
 }
 
+// ─── 달력 렌더링 ────────────────────────────────────────────
+function renderCalendar() {
+  document.getElementById('calendarTitle').textContent =
+    `${calendarYear}년 ${calendarMonth + 1}월`;
+
+  const grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+
+  // 요일 헤더
+  dayLabels.forEach((d, i) => {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day-header' + (i === 0 ? ' sun' : i === 6 ? ' sat' : '');
+    cell.textContent = d;
+    grid.appendChild(cell);
+  });
+
+  // 이번 달 1일의 요일(0=일)
+  const firstDay = new Date(calendarYear, calendarMonth, 1).getDay();
+  // 이번 달 마지막 날
+  const lastDate = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+
+  // 빈 칸 채우기
+  for (let i = 0; i < firstDay; i++) {
+    grid.appendChild(document.createElement('div'));
+  }
+
+  const todayStr    = toDateStr(today);
+  const selectedStr = toDateStr(currentDateObj);
+
+  for (let d = 1; d <= lastDate; d++) {
+    const dateStr = `${calendarYear}-${String(calendarMonth + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dow = new Date(calendarYear, calendarMonth, d).getDay();
+
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell';
+    if (dow === 0) cell.classList.add('sun');
+    if (dow === 6) cell.classList.add('sat');
+    if (dateStr === todayStr)    cell.classList.add('today');
+    if (dateStr === selectedStr) cell.classList.add('selected');
+
+    const num = document.createElement('span');
+    num.className = 'cal-num';
+    num.textContent = d;
+    cell.appendChild(num);
+
+    // 완료 dot
+    if (dateSummary[dateStr]) {
+      const dot = document.createElement('span');
+      dot.className = 'cal-dot ' + (dateSummary[dateStr] === 'done' ? 'dot-done' : 'dot-active');
+      cell.appendChild(dot);
+    }
+
+    cell.addEventListener('click', () => selectDate(dateStr));
+    grid.appendChild(cell);
+  }
+}
+
 function escapeHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
@@ -128,3 +216,4 @@ function escapeHtml(str) {
 // 초기 로드
 updateDateLabel();
 loadTodos();
+renderCalendar();

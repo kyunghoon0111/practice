@@ -277,3 +277,135 @@ body {
   from { opacity: 0; transform: translateY(-6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ─── 달력 ─────────────────────────────────────── */
+.calendar-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px 16px 20px;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.calendar-header span {
+  font-size: 15px;
+  font-weight: 700;
+  color: #5b3e96;
+}
+
+.cal-nav-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #7c5cbf;
+  cursor: pointer;
+  padding: 2px 10px;
+  border-radius: 8px;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.cal-nav-btn:hover {
+  background: rgba(124, 92, 191, 0.1);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.cal-day-header {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #9a8baa;
+  padding: 4px 0 8px;
+}
+
+.cal-day-header.sun { color: #e06060; }
+.cal-day-header.sat { color: #6080e0; }
+
+.cal-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 2px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+  min-height: 46px;
+}
+
+.cal-cell:hover {
+  background: rgba(124, 92, 191, 0.08);
+}
+
+.cal-cell.sun .cal-num { color: #e06060; }
+.cal-cell.sat .cal-num { color: #6080e0; }
+
+.cal-num {
+  font-size: 13px;
+  font-weight: 500;
+  color: #444;
+  line-height: 1;
+}
+
+/* 오늘 */
+.cal-cell.today .cal-num {
+  background: #ede8f8;
+  color: #7c5cbf;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* 선택된 날짜 */
+.cal-cell.selected {
+  background: #7c5cbf;
+}
+
+.cal-cell.selected .cal-num {
+  color: #fff;
+  background: transparent;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.cal-cell.selected.sun .cal-num,
+.cal-cell.selected.sat .cal-num {
+  color: #fff;
+}
+
+/* 날짜 아래 dot */
+.cal-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-done {
+  background: #4caf82;
+  box-shadow: 0 0 4px rgba(76, 175, 130, 0.6);
+}
+
+.dot-active {
+  background: #c9a8f0;
+}
