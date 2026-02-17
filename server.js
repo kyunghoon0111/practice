@@ -5,8 +5,24 @@ const path = require('path');
 const PORT = 3000;
 const todos = [];
 
+const STATIC_FILES = {
+  '/style.css': { file: 'style.css', type: 'text/css' },
+  '/app.js':    { file: 'app.js',    type: 'text/javascript' },
+};
+
+function serveStatic(res, file, contentType) {
+  fs.readFile(path.join(__dirname, file), (err, data) => {
+    if (err) { res.writeHead(500); res.end('Server Error'); return; }
+    res.writeHead(200, { 'Content-Type': contentType });
+    res.end(data);
+  });
+}
+
 const server = http.createServer((req, res) => {
-  if (req.method === 'GET' && req.url === '/') {
+  if (req.method === 'GET' && STATIC_FILES[req.url]) {
+    const { file, type } = STATIC_FILES[req.url];
+    serveStatic(res, file, type);
+  } else if (req.method === 'GET' && req.url === '/') {
     const filePath = path.join(__dirname, 'index.html');
     fs.readFile(filePath, (err, data) => {
       if (err) {
