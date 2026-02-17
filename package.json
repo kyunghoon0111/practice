@@ -4,6 +4,6 @@
   "description": "Simple Node.js Todo List App",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node --env-file=.env server.js"
   }
 }
