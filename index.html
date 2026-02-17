@@ -10,7 +10,14 @@
   <div class="container">
     <div class="header">
       <h1>Todo</h1>
-      <div class="date" id="todayDate"></div>
+      <div class="date-nav">
+        <button class="nav-btn" onclick="changeDate(-1)">&#8249;</button>
+        <div class="date-info">
+          <span id="todayDate"></span>
+          <span class="all-done-dot" id="allDoneDot" title="모두 완료!"></span>
+        </div>
+        <button class="nav-btn" onclick="changeDate(1)">&#8250;</button>
+      </div>
     </div>
 
     <div class="input-row">

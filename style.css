@@ -38,9 +38,60 @@ body {
   100% { text-shadow: 0 0 0px rgba(91, 62, 150, 0); }
 }
 
-.header .date {
+/* 날짜 네비게이션 */
+.date-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.date-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   color: #7a6b8a;
+  min-width: 200px;
+  justify-content: center;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #7c5cbf;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 8px;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.nav-btn:hover {
+  background: rgba(124, 92, 191, 0.12);
+}
+
+/* 완료 dot */
+.all-done-dot {
+  display: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #4caf82;
+  box-shadow: 0 0 6px rgba(76, 175, 130, 0.7);
+  animation: dotPulse 1.6s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.all-done-dot.visible {
+  display: inline-block;
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%       { transform: scale(1.4); opacity: 0.7; }
 }
 
 /* 입력 영역 */
