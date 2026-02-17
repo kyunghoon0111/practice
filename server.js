@@ -42,11 +42,17 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
       const { text } = JSON.parse(body);
       if (text && text.trim()) {
-        todos.push({ id: Date.now(), text: text.trim() });
+        todos.push({ id: Date.now(), text: text.trim(), done: false });
       }
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(todos));
     });
+  } else if (req.method === 'PATCH' && req.url.match(/^\/todos\/\d+\/toggle$/)) {
+    const id = parseInt(req.url.split('/')[2]);
+    const todo = todos.find(t => t.id === id);
+    if (todo) todo.done = !todo.done;
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(todos));
   } else if (req.method === 'DELETE' && req.url.startsWith('/todos/')) {
     const id = parseInt(req.url.split('/')[2]);
     const index = todos.findIndex(t => t.id === id);

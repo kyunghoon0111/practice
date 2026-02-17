@@ -3,19 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>투두리스트</title>
+  <title>Todo</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
   <div class="container">
-    <h1>투두리스트</h1>
-    <div class="input-row">
-      <input type="text" id="todoInput" placeholder="할 일을 입력하세요..." />
-      <button onclick="addTodo()">추가</button>
+    <div class="header">
+      <h1>Todo</h1>
+      <div class="date" id="todayDate"></div>
     </div>
-    <ul id="todoList">
-      <li class="empty" id="emptyMsg">아직 할 일이 없습니다.</li>
-    </ul>
+
+    <div class="input-row">
+      <input type="text" id="todoInput" placeholder="새로운 할 일을 추가하세요..." />
+      <button onclick="addTodo()">+ 추가</button>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="active" data-filter="all" onclick="setFilter('all', this)">전체</button>
+      <button data-filter="active" onclick="setFilter('active', this)">진행중</button>
+      <button data-filter="done" onclick="setFilter('done', this)">완료</button>
+    </div>
+
+    <div class="stats-card">
+      <div class="stat">
+        <div class="value" id="activeCount">0</div>
+        <div class="label">진행중인 할 일</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="donePercent">0%</div>
+        <div class="label">완료</div>
+      </div>
+      <div class="stat">
+        <div class="value" id="totalCount">0개</div>
+        <div class="label">전체</div>
+      </div>
+    </div>
+
+    <ul class="todo-list" id="todoList"></ul>
   </div>
   <script src="/app.js"></script>
 </body>

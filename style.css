@@ -6,99 +6,213 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #f0f2f5;
+  background: linear-gradient(135deg, #e8e0f0 0%, #d5c8e8 50%, #c9b8e0 100%);
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding: 60px 16px;
+  padding: 50px 16px;
 }
 
 .container {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  padding: 36px;
   width: 100%;
   max-width: 480px;
 }
 
-h1 {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 24px;
+/* 헤더 */
+.header {
   text-align: center;
+  margin-bottom: 28px;
 }
 
+.header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #5b3e96;
+  margin-bottom: 8px;
+}
+
+.header .date {
+  font-size: 14px;
+  color: #7a6b8a;
+}
+
+/* 입력 영역 */
 .input-row {
   display: flex;
-  gap: 8px;
-  margin-bottom: 28px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .input-row input {
   flex: 1;
-  padding: 10px 14px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 15px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   outline: none;
-  transition: border-color 0.2s;
 }
 
-.input-row input:focus {
-  border-color: #5b8dee;
+.input-row input::placeholder {
+  color: #b0a3be;
 }
 
 .input-row button {
-  padding: 10px 18px;
-  background: #5b8dee;
+  padding: 14px 22px;
+  background: #7c5cbf;
   color: #fff;
   border: none;
-  border-radius: 8px;
-  font-size: 15px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(124, 92, 191, 0.3);
 }
 
 .input-row button:hover {
-  background: #3a6fd8;
+  background: #6a4aad;
 }
 
-ul {
-  list-style: none;
+/* 필터 탭 */
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
-ul li {
+.filter-tabs button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(255, 255, 255, 0.6);
+  color: #7a6b8a;
+}
+
+.filter-tabs button.active {
+  background: #7c5cbf;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(124, 92, 191, 0.3);
+}
+
+.filter-tabs button:not(.active):hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* 통계 카드 */
+.stats-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 14px;
-  border-radius: 8px;
-  background: #f7f8fc;
-  margin-bottom: 10px;
-  font-size: 15px;
-  color: #444;
-  animation: fadeIn 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-ul li .delete-btn {
+.stats-card .stat {
+  text-align: center;
+}
+
+.stats-card .stat .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #5b3e96;
+}
+
+.stats-card .stat .label {
+  font-size: 12px;
+  color: #9a8baa;
+  margin-top: 2px;
+}
+
+/* 할 일 목록 */
+.todo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.todo-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  animation: fadeIn 0.25s ease;
+}
+
+.todo-list li .checkbox {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.todo-list li .checkbox:hover {
+  border-color: #7c5cbf;
+}
+
+.todo-list li.done .checkbox {
+  background: #7c5cbf;
+  border-color: #7c5cbf;
+}
+
+.todo-list li.done .checkbox::after {
+  content: '✓';
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.todo-list li .text {
+  flex: 1;
+  font-size: 15px;
+  color: #333;
+}
+
+.todo-list li.done .text {
+  text-decoration: line-through;
+  color: #a090b4;
+}
+
+.todo-list li .delete-btn {
   background: none;
   border: none;
-  color: #bbb;
-  font-size: 18px;
+  color: #ccc;
+  font-size: 16px;
   cursor: pointer;
-  line-height: 1;
+  padding: 4px;
   transition: color 0.2s;
+  flex-shrink: 0;
 }
 
-ul li .delete-btn:hover {
+.todo-list li .delete-btn:hover {
   color: #e55;
 }
 
-.empty {
+/* 빈 상태 */
+.empty-msg {
   text-align: center;
-  color: #aaa;
+  color: #a090b4;
   font-size: 14px;
-  padding: 20px 0;
+  padding: 30px 0;
 }
 
 @keyframes fadeIn {
