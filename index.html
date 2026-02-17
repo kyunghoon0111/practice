@@ -48,6 +48,14 @@
 
     <ul class="todo-list" id="todoList"></ul>
 
+    <!-- 축하 이미지 생성 버튼 (모두 완료 시 표시) -->
+    <div class="celebration-bar" id="celebrationBar">
+      <button class="celebration-btn" id="celebrationBtn" onclick="generateCelebration()">
+        <span id="celebBtnIcon">🎉</span>
+        <span id="celebBtnText">나노 바나나로 축하 이미지 생성</span>
+      </button>
+    </div>
+
     <!-- 달력 -->
     <div class="calendar-card" id="calendarCard">
       <div class="calendar-header">
@@ -58,6 +66,23 @@
       <div class="calendar-grid" id="calendarGrid"></div>
     </div>
   </div>
+  <!-- 축하 이미지 모달 -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-title">🎉 오늘의 할일 모두 완료!</div>
+      <div class="modal-subtitle" id="modalSubtitle"></div>
+      <div class="modal-image-wrap" id="modalImageWrap">
+        <div class="modal-loading" id="modalLoading">
+          <div class="spinner"></div>
+          <p>나노 바나나가 이미지를 생성 중...</p>
+        </div>
+        <img class="modal-image" id="modalImage" src="" alt="축하 이미지" style="display:none" />
+      </div>
+      <a class="modal-download" id="modalDownload" download="celebration.png" style="display:none">⬇ 이미지 저장</a>
+    </div>
+  </div>
+
   <script src="/app.js"></script>
 </body>
 </html>

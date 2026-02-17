@@ -1,4 +1,5 @@
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
@@ -94,6 +95,75 @@ const server = http.createServer((req, res) => {
     }
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify(todos[date] || []));
+
+  // POST /generate-image  body: {date, tasks}
+  } else if (req.method === 'POST' && pathname === '/generate-image') {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'GEMINI_API_KEY 환경변수가 설정되지 않았습니다.' }));
+      return;
+    }
+
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      const { date, tasks } = JSON.parse(body);
+      const taskList = (tasks || []).join(', ');
+      const prompt =
+        `Create a vibrant, joyful celebration illustration. ` +
+        `A person just completed all their daily todo tasks on ${date}. ` +
+        `Tasks completed: ${taskList}. ` +
+        `Include colorful confetti, stars, fireworks, and cheerful decorative elements. ` +
+        `Bright, uplifting digital art style with a festive mood.`;
+
+      const apiBody = JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
+      });
+
+      const options = {
+        hostname: 'generativelanguage.googleapis.com',
+        path: `/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${apiKey}`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(apiBody)
+        }
+      };
+
+      const apiReq = https.request(options, apiRes => {
+        let data = '';
+        apiRes.on('data', chunk => { data += chunk; });
+        apiRes.on('end', () => {
+          try {
+            const result = JSON.parse(data);
+            const imagePart = result.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+            if (imagePart) {
+              res.writeHead(200, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({
+                image: imagePart.inlineData.data,
+                mimeType: imagePart.inlineData.mimeType
+              }));
+            } else {
+              res.writeHead(500, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ error: '이미지를 생성하지 못했습니다.', detail: result }));
+            }
+          } catch (e) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: '응답 파싱 오류' }));
+          }
+        });
+      });
+
+      apiReq.on('error', e => {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      });
+
+      apiReq.write(apiBody);
+      apiReq.end();
+    });
 
   } else {
     res.writeHead(404);

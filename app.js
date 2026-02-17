@@ -118,12 +118,80 @@ function updateStats() {
   document.getElementById('donePercent').textContent = percent + '%';
   document.getElementById('totalCount').textContent = total + '개';
 
-  const dot = document.getElementById('allDoneDot');
-  if (total > 0 && done === total) {
-    dot.classList.add('visible');
+  const allDone = total > 0 && done === total;
+
+  // 헤더 dot
+  document.getElementById('allDoneDot').classList.toggle('visible', allDone);
+
+  // 축하 이미지 생성 버튼
+  const bar = document.getElementById('celebrationBar');
+  if (allDone) {
+    bar.classList.add('visible');
   } else {
-    dot.classList.remove('visible');
+    bar.classList.remove('visible');
+    resetCelebrationBtn();
   }
+}
+
+function resetCelebrationBtn() {
+  document.getElementById('celebBtnIcon').textContent = '🎉';
+  document.getElementById('celebBtnText').textContent = '나노 바나나로 축하 이미지 생성';
+  document.getElementById('celebrationBtn').disabled = false;
+}
+
+async function generateCelebration() {
+  const btn = document.getElementById('celebrationBtn');
+  btn.disabled = true;
+  document.getElementById('celebBtnIcon').textContent = '⏳';
+  document.getElementById('celebBtnText').textContent = '이미지 생성 중...';
+
+  // 모달 열기 (로딩 상태)
+  const overlay = document.getElementById('modalOverlay');
+  const modalImg = document.getElementById('modalImage');
+  const loading = document.getElementById('modalLoading');
+  const download = document.getElementById('modalDownload');
+  const subtitle = document.getElementById('modalSubtitle');
+
+  subtitle.textContent = toDateStr(currentDateObj).replace(/-/g, '.');
+  modalImg.style.display = 'none';
+  loading.style.display = 'flex';
+  download.style.display = 'none';
+  overlay.classList.add('visible');
+
+  try {
+    const tasks = allTodos.map(t => t.text);
+    const res = await fetch('/generate-image', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: toDateStr(currentDateObj), tasks })
+    });
+    const data = await res.json();
+
+    if (data.image) {
+      const src = `data:${data.mimeType};base64,${data.image}`;
+      modalImg.src = src;
+      modalImg.style.display = 'block';
+      loading.style.display = 'none';
+      download.href = src;
+      download.style.display = 'inline-block';
+
+      document.getElementById('celebBtnIcon').textContent = '✅';
+      document.getElementById('celebBtnText').textContent = '이미지 생성 완료!';
+    } else {
+      throw new Error(data.error || '이미지 생성 실패');
+    }
+  } catch (e) {
+    loading.style.display = 'none';
+    document.getElementById('modalImageWrap').innerHTML =
+      `<p style="color:rgba(255,255,255,0.5);text-align:center;padding:20px">${e.message}</p>`;
+    document.getElementById('celebBtnIcon').textContent = '❌';
+    document.getElementById('celebBtnText').textContent = '생성 실패 — 다시 시도';
+    btn.disabled = false;
+  }
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('visible');
 }
 
 function render() {
