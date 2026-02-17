@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,37 +7,38 @@
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #e8e0f0 0%, #d5c8e8 50%, #c9b8e0 100%);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background: linear-gradient(145deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding: 50px 16px;
+  padding: 48px 16px 80px;
 }
 
 .container {
   width: 100%;
-  max-width: 480px;
+  max-width: 460px;
 }
 
-/* 헤더 */
+/* ─── 헤더 ─────────────────────────────────────── */
 .header {
   text-align: center;
   margin-bottom: 28px;
 }
 
 .header h1 {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
-  color: #5b3e96;
-  margin-bottom: 8px;
+  letter-spacing: -1px;
+  color: #fff;
+  margin-bottom: 10px;
   animation: titleShadow 2.5s ease-in-out infinite;
 }
 
 @keyframes titleShadow {
-  0%   { text-shadow: 0 0 0px rgba(91, 62, 150, 0); }
-  50%  { text-shadow: 0 4px 20px rgba(91, 62, 150, 0.5), 0 0 40px rgba(124, 92, 191, 0.3); }
-  100% { text-shadow: 0 0 0px rgba(91, 62, 150, 0); }
+  0%   { text-shadow: none; }
+  50%  { text-shadow: 0 0 32px rgba(167, 139, 250, 0.7), 0 0 64px rgba(139, 92, 246, 0.3); }
+  100% { text-shadow: none; }
 }
 
 /* 날짜 네비게이션 */
@@ -43,44 +46,51 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-top: 6px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .date-info {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
-  color: #7a6b8a;
-  min-width: 200px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  min-width: 210px;
   justify-content: center;
+  letter-spacing: 0.2px;
 }
 
 .nav-btn {
-  background: none;
-  border: none;
-  font-size: 22px;
-  color: #7c5cbf;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  padding: 2px 8px;
-  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
   line-height: 1;
-  transition: background 0.15s;
 }
 
 .nav-btn:hover {
-  background: rgba(124, 92, 191, 0.12);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
 }
 
-/* 완료 dot */
+/* 완료 dot (헤더) */
 .all-done-dot {
   display: none;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: #4caf82;
-  box-shadow: 0 0 6px rgba(76, 175, 130, 0.7);
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
   animation: dotPulse 1.6s ease-in-out infinite;
   flex-shrink: 0;
 }
@@ -91,130 +101,172 @@ body {
 
 @keyframes dotPulse {
   0%, 100% { transform: scale(1);   opacity: 1; }
-  50%       { transform: scale(1.4); opacity: 0.7; }
+  50%       { transform: scale(1.5); opacity: 0.6; }
 }
 
-/* 입력 영역 */
+/* ─── 유리 카드 공통 ───────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+}
+
+/* ─── 입력 영역 ─────────────────────────────────── */
 .input-row {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .input-row input {
   flex: 1;
   padding: 14px 18px;
-  border: none;
-  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
   font-size: 14px;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  font-family: inherit;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(20px);
+  color: #fff;
   outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input-row input::placeholder {
-  color: #b0a3be;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.input-row input:focus {
+  border-color: rgba(167, 139, 250, 0.6);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
 }
 
 .input-row button {
   padding: 14px 22px;
-  background: #7c5cbf;
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
   color: #fff;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 14px;
   font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
   white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(124, 92, 191, 0.3);
+  box-shadow: 0 4px 16px rgba(109, 40, 217, 0.4);
 }
 
 .input-row button:hover {
-  background: #6a4aad;
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  box-shadow: 0 6px 20px rgba(109, 40, 217, 0.5);
+  transform: translateY(-1px);
 }
 
-/* 필터 탭 */
+/* ─── 필터 탭 ───────────────────────────────────── */
 .filter-tabs {
   display: flex;
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .filter-tabs button {
   padding: 8px 20px;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   font-size: 13px;
   font-weight: 500;
+  font-family: inherit;
   cursor: pointer;
   transition: all 0.2s;
-  background: rgba(255, 255, 255, 0.6);
-  color: #7a6b8a;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .filter-tabs button.active {
-  background: #7c5cbf;
+  background: rgba(139, 92, 246, 0.35);
+  border-color: rgba(139, 92, 246, 0.5);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(124, 92, 191, 0.3);
+  font-weight: 600;
 }
 
 .filter-tabs button:not(.active):hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
 }
 
-/* 통계 카드 */
+/* ─── 통계 카드 ─────────────────────────────────── */
 .stats-card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 18px 22px;
-  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 16px 24px;
+  margin-bottom: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .stats-card .stat {
   text-align: center;
+  flex: 1;
+}
+
+.stats-card .stat + .stat {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .stats-card .stat .value {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  color: #5b3e96;
+  color: #c4b5fd;
+  letter-spacing: -0.5px;
 }
 
 .stats-card .stat .label {
-  font-size: 12px;
-  color: #9a8baa;
-  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 3px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 
-/* 할 일 목록 */
+/* ─── 할 일 목록 ─────────────────────────────────── */
 .todo-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .todo-list li {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 16px 18px;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  animation: fadeIn 0.25s ease;
+  padding: 15px 18px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  animation: fadeIn 0.22s ease;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.todo-list li:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 .todo-list li .checkbox {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  border: 2px solid #ccc;
+  border: 2px solid rgba(255, 255, 255, 0.25);
   cursor: pointer;
   flex-shrink: 0;
   display: flex;
@@ -224,96 +276,111 @@ body {
 }
 
 .todo-list li .checkbox:hover {
-  border-color: #7c5cbf;
+  border-color: #a78bfa;
+  background: rgba(167, 139, 250, 0.15);
 }
 
 .todo-list li.done .checkbox {
-  background: #7c5cbf;
-  border-color: #7c5cbf;
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  border-color: transparent;
 }
 
 .todo-list li.done .checkbox::after {
   content: '✓';
   color: #fff;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
 }
 
 .todo-list li .text {
   flex: 1;
-  font-size: 15px;
-  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
 }
 
 .todo-list li.done .text {
   text-decoration: line-through;
-  color: #a090b4;
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 400;
 }
 
 .todo-list li .delete-btn {
   background: none;
   border: none;
-  color: #ccc;
-  font-size: 16px;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 15px;
   cursor: pointer;
   padding: 4px;
   transition: color 0.2s;
   flex-shrink: 0;
+  line-height: 1;
 }
 
 .todo-list li .delete-btn:hover {
-  color: #e55;
+  color: #f87171;
 }
 
 /* 빈 상태 */
 .empty-msg {
   text-align: center;
-  color: #a090b4;
+  color: rgba(255, 255, 255, 0.25);
   font-size: 14px;
-  padding: 30px 0;
+  padding: 36px 0;
+  font-weight: 500;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-6px); }
+  from { opacity: 0; transform: translateY(-5px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── 달력 ─────────────────────────────────────── */
 .calendar-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 18px 16px 20px;
-  margin-top: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 20px 16px 22px;
+  margin-top: 16px;
 }
 
 .calendar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  padding: 0 4px;
 }
 
 .calendar-header span {
   font-size: 15px;
   font-weight: 700;
-  color: #5b3e96;
+  color: #fff;
+  letter-spacing: -0.3px;
 }
 
 .cal-nav-btn {
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #7c5cbf;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  padding: 2px 10px;
-  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
   line-height: 1;
-  transition: background 0.15s;
 }
 
 .cal-nav-btn:hover {
-  background: rgba(124, 92, 191, 0.1);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
 }
 
 .calendar-grid {
@@ -324,68 +391,63 @@ body {
 
 .cal-day-header {
   text-align: center;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  color: #9a8baa;
-  padding: 4px 0 8px;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 4px 0 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.cal-day-header.sun { color: #e06060; }
-.cal-day-header.sat { color: #6080e0; }
+.cal-day-header.sun { color: rgba(248, 113, 113, 0.7); }
+.cal-day-header.sat { color: rgba(96, 165, 250, 0.7); }
 
 .cal-cell {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   padding: 6px 2px;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   transition: background 0.15s;
-  min-height: 46px;
+  min-height: 48px;
 }
 
 .cal-cell:hover {
-  background: rgba(124, 92, 191, 0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.cal-cell.sun .cal-num { color: #e06060; }
-.cal-cell.sat .cal-num { color: #6080e0; }
+.cal-cell.sun .cal-num { color: rgba(248, 113, 113, 0.85); }
+.cal-cell.sat .cal-num { color: rgba(96, 165, 250, 0.85); }
 
 .cal-num {
   font-size: 13px;
   font-weight: 500;
-  color: #444;
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
 
 /* 오늘 */
 .cal-cell.today .cal-num {
-  background: #ede8f8;
-  color: #7c5cbf;
-  border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: rgba(139, 92, 246, 0.25);
+  border: 1px solid rgba(139, 92, 246, 0.5);
+  color: #c4b5fd;
   font-weight: 700;
 }
 
 /* 선택된 날짜 */
-.cal-cell.selected {
-  background: #7c5cbf;
-}
-
 .cal-cell.selected .cal-num {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
   color: #fff;
-  background: transparent;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-weight: 700;
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.5);
 }
 
 .cal-cell.selected.sun .cal-num,
@@ -395,17 +457,17 @@ body {
 
 /* 날짜 아래 dot */
 .cal-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .dot-done {
-  background: #4caf82;
-  box-shadow: 0 0 4px rgba(76, 175, 130, 0.6);
+  background: #34d399;
+  box-shadow: 0 0 5px rgba(52, 211, 153, 0.7);
 }
 
 .dot-active {
-  background: #c9a8f0;
+  background: rgba(167, 139, 250, 0.6);
 }
