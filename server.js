@@ -124,7 +124,7 @@ const server = http.createServer((req, res) => {
 
       const options = {
         hostname: 'generativelanguage.googleapis.com',
-        path: `/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${apiKey}`,
+        path: `/v1beta/models/gemini-2.5-flash-image:generateContent?key=${apiKey}`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
